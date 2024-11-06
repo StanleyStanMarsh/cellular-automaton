@@ -23,10 +23,7 @@ def bools_to_int(bools: Moore) -> int:
 
 
 class Cell:
-    def __init__(self):
-        self.state = False
-
-    def __init__(self, state: bool):
+    def __init__(self, state: bool = False):
         self.state = state
 
     def new_state(self, state: bool):
@@ -111,3 +108,9 @@ class AutomataGrid:
 
         moore_neighbourhood = (s_0.state, s_1.state, s_2.state, s_3.state, s_4.state)
         self.grid[row, col].new_state(self.__rule(moore_neighbourhood))
+
+    def next_iteration(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                self.__cell_next_state(row, col)
+
