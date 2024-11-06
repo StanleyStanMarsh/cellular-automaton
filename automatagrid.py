@@ -120,3 +120,13 @@ class AutomataGrid:
             for col in range(self.cols):
                 self.__cell_next_state(row, col)
 
+    def __str__(self) -> str:
+        result = []
+        for row in range(self.rows):
+            row_state = []
+            for col in range(self.cols):
+                cell = self.grid[row, col]
+                row_state.append('1' if cell.state else '0')
+            result.append(' '.join(row_state))
+        return '\n'.join(result)
+
