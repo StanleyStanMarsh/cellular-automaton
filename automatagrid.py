@@ -36,6 +36,12 @@ class AutomataGrid:
         self.cols = cols
         self.grid = np.empty((rows, cols), dtype=Cell)
 
+    def fill_randomly(self):
+        for r in range(self.rows):
+            for c in range(self.cols):
+                random_state = np.random.choice([True, False])
+                self.grid[r, c] = Cell(random_state)
+
     @staticmethod
     def __rule(cells_states: Moore) -> bool:
         initial_rule_value = constant.RULE_VALUE
