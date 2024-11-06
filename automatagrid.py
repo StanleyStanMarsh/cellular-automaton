@@ -33,7 +33,7 @@ class Cell:
         self.state = state
 
 
-class Grid:
+class AutomataGrid:
     def __init__(self, rows: int, cols: int):
         self.rows = rows
         self.cols = cols
