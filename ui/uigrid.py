@@ -1,18 +1,23 @@
-from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout, QHBoxLayout
+import copy
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout, QHBoxLayout, QSlider
 from automata.automatagrid import AutomataGrid
 
 
 class UIGrid(QWidget):
-    def __init__(self, m: int, n: int):
+    def __init__(self, m: int = 2, n: int = 2, iterations: int = 1):
         super().__init__()
         self.generate_button = QPushButton('Сгенерировать')
         self.reset_button = QPushButton('Очистить')
-        self.next_button = QPushButton('Следующая итерация')
+        self.calc_iterations_button = QPushButton('Просчитать итерации')
+        self.iterations_slider = QSlider(Qt.Orientation.Horizontal)
         self.grid_layout = QGridLayout()
         self.is_clickable = False
         self.m = m
         self.n = n
+        self.iterations = iterations
         self.grid = AutomataGrid(m, n)
+        self.grids = [self.grid]
         self.init_ui()
 
     def init_ui(self):
@@ -37,19 +42,35 @@ class UIGrid(QWidget):
         # add grid to main layout
         main_layout.addLayout(self.grid_layout)
 
-        # control buttons
+        # -------------- control buttons --------------
         control_layout = QHBoxLayout()
 
         self.generate_button.clicked.connect(self.generate_clicked)
         self.reset_button.clicked.connect(self.clear)
-        self.next_button.clicked.connect(self.next_clicked)
+        self.calc_iterations_button.clicked.connect(self.calc_clicked)
 
         control_layout.addWidget(self.generate_button)
         control_layout.addWidget(self.reset_button)
-        control_layout.addWidget(self.next_button)
+        control_layout.addWidget(self.calc_iterations_button)
+        # ---------------------------------------------
+
+        # -------------- slider control --------------
+        slider_layout = QHBoxLayout()
+
+        # Initialize the slider
+        self.iterations_slider.setMinimum(0)
+        self.iterations_slider.setMaximum(self.iterations)
+        self.iterations_slider.setValue(0)  # Set initial value if needed
+        self.iterations_slider.valueChanged.connect(self.slider_changed)
+        slider_layout.addWidget(self.iterations_slider)
+        self.iterations_slider.setEnabled(False)
+        # ---------------------------------------------
 
         # add control buttons to main layout
         main_layout.addLayout(control_layout)
+
+        # add slider to main layout
+        main_layout.addLayout(slider_layout)
 
         self.setLayout(main_layout)
         self.setWindowTitle('Grid of Buttons')
@@ -70,23 +91,39 @@ class UIGrid(QWidget):
                 if self.grid.grid[row][col].state:
                     button = self.grid_layout.itemAtPosition(row, col).widget()
                     button.setStyleSheet('QPushButton {background-color: #FF0000}')
+        self.grids = [self.grid]
+        self.iterations_slider.setValue(0)
+        self.iterations_slider.setDisabled(True)
 
     def clear(self):
+        self.iterations_slider.setValue(0)
         self.grid = AutomataGrid(self.m, self.n)
+        self.grids = [self.grid]
         for row in range(self.m):
             for col in range(self.n):
                 button = self.grid_layout.itemAtPosition(row, col).widget()
                 button.setStyleSheet('QPushButton {background-color: #FFFFFF}')
                 button.setText('')
+        self.iterations_slider.setDisabled(True)
 
-    def next_clicked(self):
-        self.grid.next_iteration()
+    def calc_clicked(self):
+        if self.grids[0].is_empty():
+            return
+        original = copy.deepcopy(self.grids[0])
+        for i in range(self.iterations):
+            self.grid.next_iteration()
+            new_grid = copy.deepcopy(self.grid)
+            self.grids.append(new_grid)
+        self.grids[0] = original
+        self.grid = original
+        self.iterations_slider.setEnabled(True)
+
+    def slider_changed(self, value):
         for row in range(self.m):
             for col in range(self.n):
-                if self.grid.grid[row][col].state:
+                if self.grids[value].grid[row][col].state:
                     button = self.grid_layout.itemAtPosition(row, col).widget()
                     button.setStyleSheet('QPushButton {background-color: #FF0000}')
                 else:
                     button = self.grid_layout.itemAtPosition(row, col).widget()
                     button.setStyleSheet('QPushButton {background-color: #FFFFFF}')
-                    button.setText('')

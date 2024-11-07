@@ -11,7 +11,6 @@ class ChooseWindow(QWidget):
         self.m_input = QLineEdit(self)
         self.n_input = QLineEdit(self)
         self.iterations_input = QLineEdit(self)
-
         # Setting up the layout
         layout = QVBoxLayout()
 
@@ -47,7 +46,7 @@ class ChooseWindow(QWidget):
             # You can add validation checks here if needed
             if m > 1 and n > 1 and iterations > 0:
                 # Instantiate UIGrid
-                self.ui_grid = UIGrid(m, n)
+                self.ui_grid = UIGrid(m, n, iterations)
                 self.ui_grid.show()
             else:
                 print("Invalid input values. Please enter values higher than 1.")

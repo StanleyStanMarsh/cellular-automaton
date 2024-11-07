@@ -120,6 +120,9 @@ class AutomataGrid:
             for col in range(self.cols):
                 self.__cell_next_state(row, col)
 
+    def is_empty(self) -> bool:
+        return self.grid[0, 0] is None
+
     def __str__(self) -> str:
         result = []
         for row in range(self.rows):
