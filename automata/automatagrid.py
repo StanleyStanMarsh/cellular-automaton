@@ -53,7 +53,7 @@ class AutomataGrid:
         string_result = bin_rule_value[num_of_state]
         return str_to_bool(string_result)
 
-    def __cell_next_state(self, row: int, col: int):
+    def __cell_next_state(self, row: int, col: int) -> Cell:
         s_0, s_1, s_2, s_3, s_4 = self.grid[row, col], Cell(), Cell(), Cell(), Cell()
         # boundary conditions
         # not on the edge
@@ -116,12 +116,14 @@ class AutomataGrid:
                     s_4 = self.grid[row, 0]
 
         neumann_neighbourhood = (s_0.state, s_1.state, s_2.state, s_3.state, s_4.state)
-        self.grid[row, col].new_state(self.__rule(neumann_neighbourhood))
+        return Cell(self.__rule(neumann_neighbourhood))
 
     def next_iteration(self):
+        grid_copy = np.empty((self.rows, self.cols), dtype=Cell)
         for row in range(self.rows):
             for col in range(self.cols):
-                self.__cell_next_state(row, col)
+                grid_copy[row, col] = self.__cell_next_state(row, col)
+        self.grid = grid_copy
 
     # def is_empty(self) -> bool:
     #     return self.grid[0, 0] is None
