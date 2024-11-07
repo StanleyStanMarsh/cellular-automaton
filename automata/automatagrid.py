@@ -35,12 +35,15 @@ class AutomataGrid:
         self.rows = rows
         self.cols = cols
         self.grid = np.empty((rows, cols), dtype=Cell)
+        for r in range(rows):
+            for c in range(cols):
+                self.grid[r, c] = Cell(False)
 
     def fill_randomly(self):
         for r in range(self.rows):
             for c in range(self.cols):
                 random_state = np.random.choice([True, False])
-                self.grid[r, c] = Cell(random_state)
+                self.grid[r, c].new_state(random_state)
 
     @staticmethod
     def __rule(cells_states: Neumann) -> bool:
@@ -120,8 +123,8 @@ class AutomataGrid:
             for col in range(self.cols):
                 self.__cell_next_state(row, col)
 
-    def is_empty(self) -> bool:
-        return self.grid[0, 0] is None
+    # def is_empty(self) -> bool:
+    #     return self.grid[0, 0] is None
 
     def set_state(self, row: int, col: int, state: bool):
         self.grid[row, col].state = state
