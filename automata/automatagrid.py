@@ -123,6 +123,12 @@ class AutomataGrid:
     def is_empty(self) -> bool:
         return self.grid[0, 0] is None
 
+    def set_state(self, row: int, col: int, state: bool):
+        self.grid[row, col].state = state
+
+    def get_state(self, row: int, col: int) -> bool:
+        return self.grid[row, col].state
+
     def __str__(self) -> str:
         result = []
         for row in range(self.rows):
