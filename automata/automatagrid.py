@@ -1,6 +1,6 @@
 import numpy as np
 from typing import TypeAlias
-import constant
+import automata.constant as const
 
 Moore: TypeAlias = tuple[bool, bool, bool, bool, bool]
 
@@ -44,9 +44,9 @@ class AutomataGrid:
 
     @staticmethod
     def __rule(cells_states: Moore) -> bool:
-        initial_rule_value = constant.RULE_VALUE
+        initial_rule_value = const.RULE_VALUE
         num_of_state = bools_to_int(cells_states)
-        bin_rule_value = format(initial_rule_value, f'0{constant.NUM_OF_DIGITS}b')
+        bin_rule_value = format(initial_rule_value, f'0{const.NUM_OF_DIGITS}b')
         string_result = bin_rule_value[num_of_state]
         return str_to_bool(string_result)
 
