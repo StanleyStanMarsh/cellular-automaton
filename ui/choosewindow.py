@@ -16,25 +16,25 @@ class ChooseWindow(QWidget):
 
         # Adding inputs for grid size
         grid_size_layout = QHBoxLayout()
-        grid_size_layout.addWidget(QLabel("Number of rows (m): "))
+        grid_size_layout.addWidget(QLabel("Количество строк: "))
         grid_size_layout.addWidget(self.m_input)
-        grid_size_layout.addWidget(QLabel("Number of columns (n): "))
+        grid_size_layout.addWidget(QLabel("Количество столбцов: "))
         grid_size_layout.addWidget(self.n_input)
         layout.addLayout(grid_size_layout)
 
         # Adding input for iterations
         iterations_layout = QHBoxLayout()
-        iterations_layout.addWidget(QLabel("Number of iterations: "))
+        iterations_layout.addWidget(QLabel("Число итераций: "))
         iterations_layout.addWidget(self.iterations_input)
         layout.addLayout(iterations_layout)
 
         # Add confirm button to create UIGrid
-        self.confirm_button = QPushButton("Create Grid", self)
+        self.confirm_button = QPushButton("Создать поле", self)
         self.confirm_button.clicked.connect(self.create_grid)
         layout.addWidget(self.confirm_button)
 
         self.setLayout(layout)
-        self.setWindowTitle("Choose Grid Parameters")
+        self.setWindowTitle("Выбор параметров поля")
 
     def create_grid(self):
         # Retrieve the input values

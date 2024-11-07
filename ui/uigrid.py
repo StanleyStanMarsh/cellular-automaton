@@ -68,7 +68,7 @@ class UIGrid(QWidget):
         # Initialize the slider
         self.iterations_slider.setMinimum(0)
         self.iterations_slider.setMaximum(self.iterations)
-        self.iterations_slider.setValue(0)  # Set initial value if needed
+        self.iterations_slider.setValue(0)
         self.iterations_slider.valueChanged.connect(self.slider_changed)
         slider_layout.addWidget(self.iterations_slider)
         self.iterations_slider.setEnabled(False)
@@ -81,7 +81,7 @@ class UIGrid(QWidget):
         main_layout.addLayout(slider_layout)
 
         self.setLayout(main_layout)
-        self.setWindowTitle('Grid of Buttons')
+        self.setWindowTitle('Поле клеточного автомата')
         self.show()
 
     def button_clicked(self, button):
