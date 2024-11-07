@@ -127,7 +127,7 @@ class AutomataGrid:
     #     return self.grid[0, 0] is None
 
     def set_state(self, row: int, col: int, state: bool):
-        self.grid[row, col].state = state
+        self.grid[row, col].new_state(state)
 
     def get_state(self, row: int, col: int) -> bool:
         return self.grid[row, col].state
