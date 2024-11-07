@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout, QHBoxLayout
-from automatagrid import AutomataGrid
+from automata.automatagrid import AutomataGrid
 
 
 class UIGrid(QWidget):
