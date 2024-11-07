@@ -2,7 +2,7 @@ import numpy as np
 from typing import TypeAlias
 import automata.constant as const
 
-Moore: TypeAlias = tuple[bool, bool, bool, bool, bool]
+Neumann: TypeAlias = tuple[bool, bool, bool, bool, bool]
 
 
 def bool_to_str(b: bool) -> str:
@@ -13,7 +13,7 @@ def str_to_bool(s: str) -> bool:
     return True if s == '1' else False
 
 
-def bools_to_int(bools: Moore) -> int:
+def bools_to_int(bools: Neumann) -> int:
     string_repres = bool_to_str(bools[0]) + \
                     bool_to_str(bools[1]) + \
                     bool_to_str(bools[2]) + \
@@ -43,7 +43,7 @@ class AutomataGrid:
                 self.grid[r, c] = Cell(random_state)
 
     @staticmethod
-    def __rule(cells_states: Moore) -> bool:
+    def __rule(cells_states: Neumann) -> bool:
         initial_rule_value = const.RULE_VALUE
         num_of_state = bools_to_int(cells_states)
         bin_rule_value = format(initial_rule_value, f'0{const.NUM_OF_DIGITS}b')
@@ -112,8 +112,8 @@ class AutomataGrid:
                     s_3 = self.grid[row, col - 1]
                     s_4 = self.grid[row, 0]
 
-        moore_neighbourhood = (s_0.state, s_1.state, s_2.state, s_3.state, s_4.state)
-        self.grid[row, col].new_state(self.__rule(moore_neighbourhood))
+        neumann_neighbourhood = (s_0.state, s_1.state, s_2.state, s_3.state, s_4.state)
+        self.grid[row, col].new_state(self.__rule(neumann_neighbourhood))
 
     def next_iteration(self):
         for row in range(self.rows):
