@@ -46,20 +46,23 @@
 ## Установка и запуск
 
 1. Клонируйте репозиторий:
-   
+
+   ```commandline
    git clone https://github.com/StanleyStanMarsh/cellular-automaton.git
    cd cellular-automaton
-   
+   ```
 
-2. Установите необходимые зависимости:
-   
+3. Установите необходимые зависимости:
+
+   ```commandline
    pip install -r requirements.txt
-   
+   ```
 
-3. Запустите приложение:
-   
+4. Запустите приложение:
+
+   ```commandline
    python main.py
-   
+   ```
 
 ## Конфигурация
 
