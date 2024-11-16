@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QApplication
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
 from ui.uigrid import UIGrid
 
 
@@ -42,11 +42,20 @@ class ChooseWindow(QWidget):
             iterations = int(self.iterations_input.text())
 
             # You can add validation checks here if needed
-            if m > 1 and n > 1 and iterations > 0:
+            if 1 < m < 51 and 1 < n < 51 and iterations > 0:
                 # Instantiate UIGrid
                 self.ui_grid = UIGrid(m, n, iterations)
                 self.ui_grid.show()
             else:
-                print("Invalid input values. Please enter values higher than 1.")
+                msg = QMessageBox.critical(
+                    self,
+                    "Ошибка",
+                    "Неверный ввод. Пожалуйста, введите значения "
+                    "от 2 до 51 для размера поля и от 1 до 200 для числа итераций."
+                )
         except ValueError:
-            print("Please enter valid integer values for grid size and iterations.")
+            msg = QMessageBox.critical(
+                self,
+                "Ошибка",
+                "Неверный ввод. Пожалуйста, введите числовые значения."
+            )

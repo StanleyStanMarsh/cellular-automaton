@@ -54,67 +54,17 @@ class AutomataGrid:
         return str_to_bool(string_result)
 
     def __cell_next_state(self, row: int, col: int) -> Cell:
-        s_0, s_1, s_2, s_3, s_4 = self.grid[row, col], Cell(), Cell(), Cell(), Cell()
-        # boundary conditions
-        # not on the edge
-        if 0 < row < self.rows - 1 and 0 < col < self.cols - 1:
-            s_1 = self.grid[row + 1, col]
-            s_2 = self.grid[row - 1, col]
-            s_3 = self.grid[row, col - 1]
-            s_4 = self.grid[row, col + 1]
-        # on the edge
-        else:
-            # left bottom
-            if row == 0 and col == 0:
-                s_1 = self.grid[row + 1, col]
-                s_2 = self.grid[self.rows - 1, 0]
-                s_3 = self.grid[0, self.cols - 1]
-                s_4 = self.grid[row, col + 1]
-            # left top
-            elif row == self.rows - 1 and col == 0:
-                s_1 = self.grid[0, 0]
-                s_2 = self.grid[row - 1, col]
-                s_3 = self.grid[0, self.cols - 1]
-                s_4 = self.grid[row, col + 1]
-            # right top
-            elif row == self.rows - 1 and col == self.cols - 1:
-                s_1 = self.grid[0, self.cols - 1]
-                s_2 = self.grid[row - 1, col]
-                s_3 = self.grid[row, col - 1]
-                s_4 = self.grid[self.rows - 1, 0]
-            # right bottom
-            elif row == 0 and col == self.cols - 1:
-                s_1 = self.grid[row + 1, col]
-                s_2 = self.grid[self.rows - 1, self.cols - 1]
-                s_3 = self.grid[row, col - 1]
-                s_4 = self.grid[0, 0]
-            # not on the corner
-            else:
-                # bottom
-                if row == 0:
-                    s_1 = self.grid[row + 1, col]
-                    s_2 = self.grid[self.rows - 1, col]
-                    s_3 = self.grid[row, col - 1]
-                    s_4 = self.grid[row, col + 1]
-                # top
-                elif row == self.rows - 1:
-                    s_1 = self.grid[0, col]
-                    s_2 = self.grid[row - 1, col]
-                    s_3 = self.grid[row, col - 1]
-                    s_4 = self.grid[row, col + 1]
-                # left
-                elif col == 0:
-                    s_1 = self.grid[row + 1, col]
-                    s_2 = self.grid[self.rows - 1, col]
-                    s_3 = self.grid[row, self.cols - 1]
-                    s_4 = self.grid[row, col + 1]
-                # right
-                elif col == self.cols - 1:
-                    s_1 = self.grid[0, col]
-                    s_2 = self.grid[row - 1, col]
-                    s_3 = self.grid[row, col - 1]
-                    s_4 = self.grid[row, 0]
+        num_rows = self.rows
+        num_cols = self.cols
 
+        # Get the current cell and its neighbors using modular arithmetic for wrapping
+        s_0 = self.grid[row, col]
+        s_1 = self.grid[(row + 1) % num_rows, col]  # Down
+        s_2 = self.grid[(row - 1) % num_rows, col]  # Up
+        s_3 = self.grid[row, (col - 1) % num_cols]  # Left
+        s_4 = self.grid[row, (col + 1) % num_cols]  # Right
+
+        # Collect the states of the Neumann neighborhood
         neumann_neighbourhood = (s_0.state, s_1.state, s_2.state, s_3.state, s_4.state)
         return Cell(self.__rule(neumann_neighbourhood))
 

@@ -1,7 +1,8 @@
 import copy
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout, QHBoxLayout, QSlider, QComboBox
-from automata.automatagrid import AutomataGrid
+from automata.automatagrid import AutomataGrid, Cell
+import numpy as np
 
 
 class UIGrid(QWidget):
@@ -42,6 +43,7 @@ class UIGrid(QWidget):
 
         # add grid to main layout
         main_layout.addLayout(self.grid_layout)
+        self.grid_layout.setSpacing(0)
 
         # -------------- control buttons --------------
         control_layout = QHBoxLayout()
@@ -140,6 +142,14 @@ class UIGrid(QWidget):
         self.grids[0] = original
         self.grid = original
         self.iterations_slider.setEnabled(True)
+        file = open('data.csv', 'a')
+        for k in range(len(self.grids)):
+            sm = 0
+            for i in range(self.rows):
+                for j in range(self.columns):
+                    sm += 1 if self.grids[k].get_state(i, j) else 0
+            file.write(str(sm) + ',' if k != len(self.grids) - 1 else str(sm) + '\n')
+        file.close()
 
     def slider_changed(self, value):
         for row in range(self.rows):
